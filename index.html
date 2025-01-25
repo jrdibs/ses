@@ -1,144 +1,204 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rainbow Six Siege League</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        header nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        table th {
+            background-color: #333;
+            color: #fff;
+        }
+        .prediction-bar {
+            display: flex;
+            height: 30px;
+            border: 1px solid #ccc;
+            margin: 10px 0;
+            position: relative;
+        }
+        .prediction-bar .team-a {
+            background-color: #4caf50;
+            color: #fff;
+            text-align: center;
+        }
+        .prediction-bar .team-b {
+            background-color: #f44336;
+            color: #fff;
+            text-align: center;
+        }
+        .tooltip {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            display: none;
+        }
+        .prediction-bar:hover .tooltip {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Rainbow Six Siege League</h1>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#players">Players</a>
+            <a href="#teams">Teams</a>
+        </nav>
+    </header>
 
-const HomePage = () => (
-  <div className="text-center">
-    <h1 className="text-2xl font-bold mb-4">Upcoming Games</h1>
-    <div className="space-y-4">
-      <div className="p-4 bg-gray-100 rounded-xl">
-        <p>Jan 25, 7:00 PM</p>
-        <p>
-          <Link to="/teams/gunners" className="text-blue-500">Gunners</Link> vs{' '}
-          <Link to="/teams/trolls" className="text-blue-500">Trolls</Link>
-        </p>
-        <div className="relative h-6 w-3/4 mx-auto bg-gray-300 rounded-full">
-          <div className="absolute top-0 left-0 h-6 rounded-full bg-blue-500" style={{ width: '75%' }}></div>
-          <div className="absolute inset-0 flex justify-between items-center px-2 text-white">
-            <span>75%</span>
-            <span>25%</span>
-          </div>
+    <div id="home" class="container">
+        <h2>Upcoming Games</h2>
+        <div>
+            <p><strong>January 30, 6:00 PM</strong></p>
+            <p>Gunners vs Trinity</p>
+            <div class="prediction-bar" onmouseover="showTooltip(this)" onmouseout="hideTooltip(this)">
+                <div class="team-a" style="width: 70%;">70%</div>
+                <div class="team-b" style="width: 30%;">30%</div>
+                <div class="tooltip">Expert Prediction</div>
+            </div>
         </div>
-        <p className="text-sm mt-2">Hover to see prediction</p>
-      </div>
+        <div>
+            <p><strong>February 2, 8:00 PM</strong></p>
+            <p>Burgers vs Trolls</p>
+            <div class="prediction-bar" onmouseover="showTooltip(this)" onmouseout="hideTooltip(this)">
+                <div class="team-a" style="width: 60%;">60%</div>
+                <div class="team-b" style="width: 40%;">40%</div>
+                <div class="tooltip">Expert Prediction</div>
+            </div>
+        </div>
     </div>
-  </div>
-);
 
-const PlayersPage = () => (
-  <div>
-    <h1 className="text-2xl font-bold mb-4">Players</h1>
-    <ul className="list-disc pl-5">
-      {['Player1', 'Player2', 'Player3'].map(player => (
-        <li key={player}>
-          <Link to={`/players/${player.toLowerCase()}`} className="text-blue-500">
-            {player}
-          </Link>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
+    <div id="players" class="container">
+        <h2>Players</h2>
+        <ul>
+            <li><a href="#">Player 1</a></li>
+            <li><a href="#">Player 2</a></li>
+            <li><a href="#">Player 3</a></li>
+        </ul>
+    </div>
 
-const PlayerProfile = ({ gamertag, name, nationality, age, role, team, stats }) => (
-  <div>
-    <h1 className="text-2xl font-bold mb-4">{gamertag}</h1>
-    <p>Name: {name}</p>
-    <p>Nationality: {nationality}</p>
-    <p>Age: {age}</p>
-    <p>Role: {role}</p>
-    <p>
-      Team: <Link to={`/teams/${team.toLowerCase()}`} className="text-blue-500">{team}</Link>
-    </p>
-    <h2 className="text-xl font-bold mt-4">Stats</h2>
-    <table className="w-full border-collapse border border-gray-300">
-      <thead>
-        <tr>
-          <th className="border border-gray-300 px-4 py-2">Season</th>
-          <th className="border border-gray-300 px-4 py-2">Team</th>
-          <th className="border border-gray-300 px-4 py-2">G</th>
-          <th className="border border-gray-300 px-4 py-2">K</th>
-          <th className="border border-gray-300 px-4 py-2">D</th>
-          <th className="border border-gray-300 px-4 py-2">A</th>
-          <th className="border border-gray-300 px-4 py-2">KD</th>
-        </tr>
-      </thead>
-      <tbody>
-        {stats.map((stat, index) => (
-          <tr key={index}>
-            <td className="border border-gray-300 px-4 py-2">{stat.season}</td>
-            <td className="border border-gray-300 px-4 py-2">{stat.team}</td>
-            <td className="border border-gray-300 px-4 py-2">{stat.g}</td>
-            <td className="border border-gray-300 px-4 py-2">{stat.k}</td>
-            <td className="border border-gray-300 px-4 py-2">{stat.d}</td>
-            <td className="border border-gray-300 px-4 py-2">{stat.a}</td>
-            <td className="border border-gray-300 px-4 py-2">{stat.kd}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-);
-
-const TeamsPage = () => (
-  <div>
-    <h1 className="text-2xl font-bold mb-4">Standings</h1>
-    <div className="grid grid-cols-2 gap-8">
-      <div>
-        <h2 className="text-xl font-bold">Western Conference</h2>
-        <table className="w-full border-collapse border border-gray-300">
-          <thead>
+    <div id="teams" class="container">
+        <h2>Teams</h2>
+        <h3>Western Conference</h3>
+        <table>
             <tr>
-              <th className="border border-gray-300 px-4 py-2">Team</th>
-              <th className="border border-gray-300 px-4 py-2">W</th>
-              <th className="border border-gray-300 px-4 py-2">L</th>
-              <th className="border border-gray-300 px-4 py-2">PCT</th>
-              <th className="border border-gray-300 px-4 py-2">GB</th>
-              <th className="border border-gray-300 px-4 py-2">RW</th>
-              <th className="border border-gray-300 px-4 py-2">RL</th>
-              <th className="border border-gray-300 px-4 py-2">RD</th>
+                <th>Team</th>
+                <th>W</th>
+                <th>L</th>
+                <th>PCT</th>
+                <th>GB</th>
+                <th>RW</th>
+                <th>RL</th>
+                <th>RD</th>
             </tr>
-          </thead>
-          <tbody>
-            {[{ team: 'Gunners', w: 4, l: 1, pct: 0.8, gb: 0, rw: 32, rl: 19, rd: 13 }].map(team => (
-              <tr key={team.team}>
-                <td className="border border-gray-300 px-4 py-2">
-                  <Link to={`/teams/${team.team.toLowerCase()}`} className="text-blue-500">
-                    {team.team}
-                  </Link>
-                </td>
-                <td className="border border-gray-300 px-4 py-2">{team.w}</td>
-                <td className="border border-gray-300 px-4 py-2">{team.l}</td>
-                <td className="border border-gray-300 px-4 py-2">{team.pct}</td>
-                <td className="border border-gray-300 px-4 py-2">{team.gb}</td>
-                <td className="border border-gray-300 px-4 py-2">{team.rw}</td>
-                <td className="border border-gray-300 px-4 py-2">{team.rl}</td>
-                <td className="border border-gray-300 px-4 py-2">{team.rd}</td>
-              </tr>
-            ))}
-          </tbody>
+            <tr>
+                <td>Gunners</td>
+                <td>4</td>
+                <td>1</td>
+                <td>.800</td>
+                <td>-</td>
+                <td>32</td>
+                <td>19</td>
+                <td>+13</td>
+            </tr>
+            <tr>
+                <td>Trinity</td>
+                <td>3</td>
+                <td>2</td>
+                <td>.600</td>
+                <td>1.0</td>
+                <td>27</td>
+                <td>29</td>
+                <td>-2</td>
+            </tr>
         </table>
-      </div>
-    </div>
-  </div>
-);
 
-const App = () => (
-  <Router>
-    <div className="p-4">
-      <nav className="mb-4">
-        <Link to="/" className="text-blue-500 px-4">Home</Link>
-        <Link to="/players" className="text-blue-500 px-4">Players</Link>
-        <Link to="/teams" className="text-blue-500 px-4">Teams</Link>
-      </nav>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/players" element={<PlayersPage />} />
-        <Route path="/teams" element={<TeamsPage />} />
-      </Routes>
+        <h3>Eastern Conference</h3>
+        <table>
+            <tr>
+                <th>Team</th>
+                <th>W</th>
+                <th>L</th>
+                <th>PCT</th>
+                <th>GB</th>
+                <th>RW</th>
+                <th>RL</th>
+                <th>RD</th>
+            </tr>
+            <tr>
+                <td>Team 7</td>
+                <td>3</td>
+                <td>1</td>
+                <td>.750</td>
+                <td>-</td>
+                <td>22</td>
+                <td>16</td>
+                <td>+6</td>
+            </tr>
+            <tr>
+                <td>Fraggers</td>
+                <td>3</td>
+                <td>2</td>
+                <td>.600</td>
+                <td>0.5</td>
+                <td>30</td>
+                <td>25</td>
+                <td>+5</td>
+            </tr>
+        </table>
     </div>
-  </Router>
-);
 
-export default App;
+    <script>
+        function showTooltip(bar) {
+            const tooltip = bar.querySelector('.tooltip');
+            tooltip.style.display = 'block';
+        }
+
+        function hideTooltip(bar) {
+            const tooltip = bar.querySelector('.tooltip');
+            tooltip.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
